@@ -29,4 +29,5 @@ flash [COM] [baud] [firmware_path]
 下载固件
 
 pkg [build_path]
+
 生成固件包
