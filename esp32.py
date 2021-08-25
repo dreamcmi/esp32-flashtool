@@ -254,7 +254,7 @@ def dl_fs():
     print("erase fs")
     command_fs = ['--port', user_com, '--chip', 'esp32','erase_region', fs_offset, fs_size]
     esptool.main(command_fs)
-    command = ['--port', user_com, '--baud', '--chip', 'esp32',user_baud, 'write_flash', fs_offset, fs_bin]
+    command = ['--port', user_com, '--baud', user_baud,'--chip', 'esp32',user_baud, 'write_flash', fs_offset, fs_bin]
     esptool.main(command)
 
 
