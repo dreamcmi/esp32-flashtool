@@ -1,5 +1,6 @@
 [pkg]
 Repo = 'D:\gitee\esp32\LuatOS-ESP32\'
+Release = 0
 
 [esp32]
 COM = 'COM57'

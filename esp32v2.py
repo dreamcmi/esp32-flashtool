@@ -17,7 +17,6 @@ import toml
 import spiffsgen
 
 ChipName = ""
-release = False
 versionCore = ""
 versionBsp = ""
 logging.basicConfig(format='- [%(levelname)s]: %(message)s', level=logging.INFO)
@@ -228,14 +227,18 @@ def pkgRom():
         info_j = json.dumps(info)
         with open('./tmp/info.json', 'w') as f:
             f.write(info_j)
-        if not release:
+        if config['pkg']['Release'] == 0:
             logging.warning("user build")
             git_sha1 = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).strip()
-            zip_name = "LuatOS-SoC_" + chip_name + '_' + git_sha1.decode() + "_" + time.strftime("%Y%m%d%H%M%S",
-                                                                                                 time.localtime()) + ".soc"
-        else:
+            zip_name = "LuatOS-SoC_" + chip_name + '_' + \
+                       git_sha1.decode() + "_" + \
+                       time.strftime("%Y%m%d%H%M%S", time.localtime()) + ".soc"
+        elif config['pkg']['Release'] == 1:
             logging.warning("release build")
             zip_name = "LuatOS-SoC_" + chip_name + '_' + versionBsp + ".soc"
+        else:
+            logging.error("release option error")
+
         logging.info(zip_name)
         z = zipfile.ZipFile(zip_name, "w")
         if os.path.isdir("tmp"):
