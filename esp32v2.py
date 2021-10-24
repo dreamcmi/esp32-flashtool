@@ -4,6 +4,7 @@ import json
 import logging
 import os
 import platform
+import re
 import shutil
 import subprocess
 import sys
@@ -17,9 +18,9 @@ import spiffsgen
 
 ChipName = ""
 release = True
-versionCore = "V0006"
-versionBsp = "V0001"
-logging.basicConfig(format='- [%(levelname)s]: %(message)s',level=logging.INFO)
+versionCore = ""
+versionBsp = ""
+logging.basicConfig(format='- [%(levelname)s]: %(message)s', level=logging.INFO)
 
 
 def flashFs():
@@ -119,6 +120,26 @@ def pkgRom():
         sys.exit(-1)
     else:
         buildPath = config['pkg']['Repo'] + 'build/'
+        # --------------------------------
+        logging.info("start get version")
+        with open(config['pkg']['Repo'] + 'components/luat/include/luat_base.h', 'r', encoding='utf-8') as f:
+            for line in f.readlines():
+                line = line.strip('\n')
+                if re.match('#define LUAT_VERSION', line):
+                    vc = re.sub('^#define LUAT_VERSION', '', line).strip()
+                    versionCore = re.sub(r'"(?!")', '', vc)
+                    break
+        logging.info("versionCore:{}".format(versionCore))
+
+        with open(config['pkg']['Repo'] + 'components/luat/include/luat_conf_bsp.h', 'r', encoding='utf-8') as f:
+            for line in f.readlines():
+                line = line.strip('\n')
+                if re.match('#define LUAT_BSP_VERSION', line):
+                    vb = re.sub('^#define LUAT_BSP_VERSION', '', line).strip()
+                    versionBsp = re.sub(r'"(?!")', '', vb)
+                    break
+        logging.info("versionBsp:{}".format(versionBsp))
+        # ---------------------------------
         if not os.path.exists('tmp'):
             os.mkdir('tmp')
         else:
