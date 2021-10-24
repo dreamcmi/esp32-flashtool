@@ -17,7 +17,7 @@ import toml
 import spiffsgen
 
 ChipName = ""
-release = True
+release = False
 versionCore = ""
 versionBsp = ""
 logging.basicConfig(format='- [%(levelname)s]: %(message)s', level=logging.INFO)
