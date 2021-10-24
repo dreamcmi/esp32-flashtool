@@ -238,6 +238,7 @@ def pkgRom():
             zip_name = "LuatOS-SoC_" + chip_name + '_' + versionBsp + ".soc"
         else:
             logging.error("release option error")
+            sys.exit(-1)
 
         logging.info(zip_name)
         z = zipfile.ZipFile(zip_name, "w")
