@@ -46,11 +46,11 @@ def flashFs():
         logging.error("not support chip")
         sys.exit(-1)
 
-    command_erase = ['--port', config[ChipName]['COM'],
-                     '--chip', ChipName, 'erase_region',
-                     config[ChipName]['FsOffset'],
-                     config[ChipName]['FsSize']]
-    esptool.main(command_erase)
+    # command_erase = ['--port', config[ChipName]['COM'],
+    #                  '--chip', ChipName, 'erase_region',
+    #                  config[ChipName]['FsOffset'],
+    #                  config[ChipName]['FsSize']]
+    # esptool.main(command_erase)
 
     command = ['--port', config[ChipName]['COM'],
                '--baud', str(config[ChipName]['Baud']),
