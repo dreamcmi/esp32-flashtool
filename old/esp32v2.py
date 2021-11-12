@@ -144,6 +144,10 @@ def pkgRom():
         else:
             shutil.rmtree('tmp')
             os.mkdir('tmp')
+        if os.exists(buildPath + '/ota_data_initial.bin'):
+            ota = True
+        else:
+            ota = False
         with open(buildPath + 'flasher_args.json', 'r', encoding='utf-8') as f:
             buildJson = json.load(f)
             part_offset = buildJson['partition_table']['offset']
