@@ -1,7 +1,9 @@
+# coding=UTF-8
 import argparse
 import json
 import logging
 import os
+import platform
 import re
 import shutil
 import subprocess
@@ -31,10 +33,18 @@ def flashFs(fspath, port, baud, chip, offset, size):
         for root, dirs, name in os.walk(fspath):
             for i in range(len(name)):
                 if name[i].endswith(".lua"):
-                    cmd = bundle_dir + "\\bin\\luac_536_32bits.exe -o" + " tmp/" + \
-                          os.path.basename(name[i]) + "c " + fspath + os.path.basename(name[i])
-                    # print(cmd)
-                    os.system(cmd)
+                    if useplat == "Windows":
+                        cmd = bundle_dir + "\\bin\\luac_536_32bits.exe -o" + " tmp/" + \
+                              os.path.basename(name[i]) + "c " + fspath + os.path.basename(name[i])
+                    elif useplat == "Linux":
+                        cmd = bundle_dir + "/bin/luac_536_32bits -o" + " tmp/" + \
+                              os.path.basename(name[i]) + "c " + fspath + os.path.basename(name[i])
+                    else:
+                        logging.error("The platform {} is not support".format(useplat))
+                    a = os.system(cmd)
+                    if a != 0:
+                        logging.error("luac failed")
+                        sys.exit(-1)
                 # 其他文件直接拷贝
                 else:
                     shutil.copy(fspath + name[i], "tmp/" + os.path.basename(name[i]))
@@ -161,6 +171,7 @@ def get_version():
 
 
 if __name__ == '__main__':
+    useplat = platform.system()
     if not os.path.exists("config.toml"):
         logging.error("config.toml not found ,please check")
         sys.exit(-1)
