@@ -95,15 +95,15 @@ def pkgRom(chip):
         )
 
         # 获取版本信息
-        logging.info("start get version")
-        with open(config['pkg']['Repo'] + 'components/luat/include/luat_base.h', 'r', encoding='utf-8') as f:
-            for line in f.readlines():
-                line = line.strip('\n')
-                if re.match('#define LUAT_VERSION', line):
-                    vc = re.sub('^#define LUAT_VERSION', '', line).strip()
-                    versionCore = re.sub(r'"(?!")', '', vc)
-                    break
-        logging.info("versionCore:{}".format(versionCore))
+        # logging.info("start get version")
+        # with open(config['pkg']['Repo'] + 'components/luat/include/luat_base.h', 'r', encoding='utf-8') as f:
+        #     for line in f.readlines():
+        #         line = line.strip('\n')
+        #         if re.match('#define LUAT_VERSION', line):
+        #             vc = re.sub('^#define LUAT_VERSION', '', line).strip()
+        #             versionCore = re.sub(r'"(?!")', '', vc)
+        #             break
+        # logging.info("versionCore:{}".format(versionCore))
 
         with open(config['pkg']['Repo'] + 'components/luat/include/luat_conf_bsp.h', 'r', encoding='utf-8') as f:
             for line in f.readlines():
