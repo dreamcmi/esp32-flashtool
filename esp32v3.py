@@ -159,7 +159,7 @@ def flashRom(rom, port, baud, chip):
                    'write_flash',
                    '0x0',
                    rom]
-        print(command)
+        # print(command)
         esptool.main(command)
     else:
         logging.error("not support chip")
