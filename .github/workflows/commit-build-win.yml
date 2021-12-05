@@ -1,4 +1,4 @@
-name: esp32-flashtool-linux
+name: esp32-flashtool-win
 on:
   push:
     branches: [ master ]
