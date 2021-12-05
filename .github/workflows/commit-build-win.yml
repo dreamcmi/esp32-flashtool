@@ -1,0 +1,20 @@
+name: esp32-flashtool-linux
+on:
+  push:
+    branches: [ master ]
+jobs:
+  build:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v2
+      - name: build
+        run: |
+          pip3 install --upgrade pip
+          pip3 install -r requirements.txt
+          pip3 install pyinstaller
+          pyinstaller -w esp32v3.spec
+      - name: Upload exe
+        uses: actions/upload-artifact@main
+        with:
+          name: esp32-flashtool
+          path: dist/
