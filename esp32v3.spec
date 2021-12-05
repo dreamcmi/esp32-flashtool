@@ -5,9 +5,9 @@ block_cipher = None
 
 
 a = Analysis(['esp32v3.py'],
-             pathex=['D:\\gitee\\esp32\\esp32_flashtools'],
+             pathex=['./'],
              binaries=[],
-             datas=[('./bin/luac_536_32bits.exe','bin')],
+             datas=[('./bin/luac_536_32bits.exe','bin'),('./bin/luac_536_32bits','bin')],
              hiddenimports=[],
              hookspath=[],
              hooksconfig={},
