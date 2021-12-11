@@ -85,7 +85,7 @@ def flashFs(fspath, port, baud, chip, offset, size):
 def pkgRom(chip):
     if chip == "esp32c3" or chip == "esp32s3":
         # 查找固件位置
-        with open(config['pkg']['Repo'] + 'build/' + "flasher_args.json", 'r', encoding='utf-8') as flash_args:
+        with open(config['pkg']['Repo'] + '/build/' + "flasher_args.json", 'r', encoding='utf-8') as flash_args:
             j = json.load(flash_args)
             if j['extra_esptool_args']['chip'] != chip:
                 logging.error("The selected chip is inconsistent with the build")
@@ -107,7 +107,7 @@ def pkgRom(chip):
         #             break
         # logging.info("versionCore:{}".format(versionCore))
 
-        with open(config['pkg']['Repo'] + 'components/luat/include/luat_conf_bsp.h', 'r', encoding='utf-8') as f:
+        with open(config['pkg']['Repo'] + '/components/luat/include/luat_conf_bsp.h', 'r', encoding='utf-8') as f:
             for line in f.readlines():
                 line = line.strip('\n')
                 if re.match('#define LUAT_BSP_VERSION', line):
@@ -145,7 +145,7 @@ def pkgRom(chip):
             for offset, name in ss:
                 fout.write(b"\xff" * (int(offset, 16) - base_offset))
                 base_offset = int(offset, 16)
-                with open(config['pkg']['Repo'] + 'build/' + name, "rb") as fin:
+                with open(config['pkg']['Repo'] + '/build/' + name, "rb") as fin:
                     data = fin.read()
                     fout.write(data)
                     base_offset += len(data)
@@ -209,7 +209,11 @@ if __name__ == '__main__':
                  config[ChipName]['Baud'],
                  ChipName)
     if args.fs:
-        flashFs(config[ChipName]['FsPath'],
+        if not config[ChipName]['FsPath'].endswith("/"):
+            Fspath = config[ChipName]['FsPath'] + "/"
+        else:
+            Fspath = config[ChipName]['FsPath']
+        flashFs(Fspath,
                 config[ChipName]['COM'],
                 config[ChipName]['Baud'],
                 ChipName,
