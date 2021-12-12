@@ -158,21 +158,22 @@ def pkgRom(chip):
 
 def flashRom(rom, port, baud, chip):
     if chip == "esp32c3" or chip == "esp32s3":
-        logging.info("erase flash")
-        command_erase = ['--port', port,
-                         '--baud', baud,
-                         '--chip', chip,
-                         'erase_flash']
-        esptool.main(command_erase)
+        command_erase = ['--chip', chip, '--port', port, '--baud', baud, 'erase_flash']
+        command = ['--chip', chip, '--port', port, '--baud', baud, 'write_flash', '0x0', rom]
+        if config[chip]["Type"] == "uart":
+            logging.info("select uart flash")
+        elif config[chip]["Type"] == "usb":
+            logging.info("select usb flash")
+            command_erase.remove("--baud")
+            command_erase.remove(baud)
+            command.remove("--baud")
+            command.remove(baud)
+        else:
+            logging.error("Flash Type error")
 
+        logging.info("erase flash")
+        esptool.main(command_erase)
         logging.info("start flash firmware")
-        command = ['--port', port,
-                   '--baud', str(baud),
-                   '--chip', chip,
-                   'write_flash',
-                   '0x0',
-                   rom]
-        # print(command)
         esptool.main(command)
     else:
         logging.error("not support chip")
@@ -180,7 +181,7 @@ def flashRom(rom, port, baud, chip):
 
 
 def get_version():
-    return '3.0.1'
+    return '3.0.2'
 
 
 if __name__ == '__main__':
